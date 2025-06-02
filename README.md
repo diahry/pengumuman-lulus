@@ -1,1 +1,1 @@
-# pengumuman-lulus
+# pengumuman-kelulusan
