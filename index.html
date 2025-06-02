@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Pengumuman Kelulusan SMP Harapan Jaya 2024/2025</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      color: #111827;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1d4ed8;
+    }
+
+    .login-form, .result {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.9em;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Pengumuman Kelulusan SMP Harapan Jaya 2024/2025</h1>
+
+  <div class="login-form">
+    <label>Nama Lengkap:</label>
+    <input type="text" id="nama" placeholder="Masukkan nama lengkap">
+
+    <label>Tanggal Lahir (dd/mm/yyyy):</label>
+    <input type="text" id="tgl" placeholder="Contoh: 21/05/2010">
+
+    <button onclick="cariData()">Lihat Hasil</button>
+  </div>
+
+  <div class="result hidden" id="hasil">
+    <h2>Hasil Kelulusan:</h2>
+    <p><strong>Nama:</strong> <span id="resNama"></span></p>
+    <p><strong>NISN:</strong> <span id="resNisn"></span></p>
+    <p><strong>Tanggal Lahir:</strong> <span id="resTgl"></span></p>
+    <p><strong>Status:</strong> <span id="resStatus" style="font-weight: bold;"></span></p>
+    <p><strong>File Kelulusan:</strong> <span id="resLink"></span></p>
+  </div>
+
+  <div class="footer">
+    Jika ada perbedaan hasil pengumuman online dengan manual, maka hasil yang menjadi acuan adalah dokumen kelulusan yang telah disahkan dan ditandatangani oleh kepala sekolah.
+  </div>
+
+  <script>
+    let dataSiswa = [];
+
+    fetch('database.csv')
+      .then(res => res.text())
+      .then(csv => {
+        const rows = csv.trim().split('\n');
+        rows.shift(); // Buang header
+        dataSiswa = rows.map(r => {
+          const [no, nama, kelas, nisn, tempat, tgl, status, nilai, rangking] = r.split(';');
+          return { 
+            nama: nama.trim().toLowerCase(), 
+             nisn: nisn.trim(),
+             tgl: tgl.trim(),
+             status: status.trim() };
+        });
+      });
+
+    function cariData() {
+    const namaInput = document.getElementById("nama").value.trim().toLowerCase();
+    const tglInput = document.getElementById("tgl").value.trim();
+
+    const hasil = dataSiswa.find(s => s.nama === namaInput && s.tgl === tglInput);
+
+    if (hasil) {
+      // Tampilkan hasil
+      document.getElementById("resNama").textContent = hasil.nama;
+      document.getElementById("resNisn").textContent = hasil.nisn;
+      document.getElementById("resTgl").textContent = hasil.tgl;
+
+      const statusEl = document.getElementById("resStatus");
+      statusEl.textContent = hasil.status;
+
+      // Pewarnaan
+      if (hasil.status.toLowerCase() === "lulus") {
+        statusEl.style.color = "green";
+        document.getElementById("resLink").innerHTML = `Lulus - Silakan ambil dokumen resmi di sekolah.`;
+      } else {
+        statusEl.style.color = "red";
+        document.getElementById("resLink").innerHTML = `Tidak lulus`;
+      }
+
+      document.getElementById("hasil").classList.remove("hidden");
+    } else {
+      alert("Data tidak ditemukan. Pastikan Nama dan Tanggal Lahir sesuai.");
+      document.getElementById("hasil").classList.add("hidden");
+    }
+  }
+
+      if (hasil) {
+        document.getElementById("resNama").textContent = hasil.nama;
+        document.getElementById("resNisn").textContent = hasil.nisn;
+        document.getElementById("resTgl").textContent = hasil.tgl;
+        document.getElementById("resStatus").textContent = hasil.status;
+
+        if (hasil.status.toLowerCase() === "lulus") {
+          document.getElementById("resLink").innerHTML = `<a href="${hasil.link}" target="_blank">Download Surat Kelulusan</a>`;
+        } else {
+          document.getElementById("resLink").innerHTML = `-`;
+        }
+
+        document.getElementById("hasil").classList.remove("hidden");
+      } else {
+        alert("Data tidak ditemukan. Periksa kembali Nama dan Tanggal Lahir Anda.");
+      }
+
+  </script>
+</body>
+</html>
