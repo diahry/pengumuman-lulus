@@ -20,7 +20,7 @@
     }
 
     h2 {
-      color: #1d4ed8;
+      color: #015431;
       text-align: center;
     }
 
@@ -71,6 +71,8 @@
     <p><strong>Nama:</strong> <span id="nama"></span></p>
     <p><strong>NISN:</strong> <span id="nisn"></span></p>
     <p><strong>Tanggal Lahir:</strong> <span id="tgl"></span></p>
+    <p><strong>Nilai Rata-Rata:</strong> <span id="nilai"></span></p>
+    <p><strong>Ranking:</strong> <span id="ranking"></span></p>
 
     <div class="status-box">
       <span id="status" class="status"></span>
@@ -85,11 +87,15 @@
     const nama = params.get("nama");
     const nisn = params.get("nisn");
     const tgl = params.get("tgl");
+    const nilai = params.get("nilai");
+    const ranking = params.get("ranking");
     const status = params.get("status");
 
-    document.getElementById("nama").textContent = nama || "-";
+    document.getElementById("nama").textContent = (nama || "-").toUpperCase();
     document.getElementById("nisn").textContent = nisn || "-";
     document.getElementById("tgl").textContent = tgl || "-";
+    document.getElementById("nilai").textContent = nilai || "-";
+    document.getElementById("ranking").textContent = ranking || "-";
 
     const statusEl = document.getElementById("status");
     statusEl.textContent = status;
