@@ -13,7 +13,7 @@
         max-width: 100px;
         height: auto;
     }
-    
+
     body {
       font-family: Arial, sans-serif;
       background: #f1f5f9;
@@ -23,7 +23,7 @@
 
     h1 {
       text-align: center;
-      color: #1d4ed8;
+      color: #015431;
     }
 
     .login-form, .result {
@@ -57,7 +57,7 @@
     .footer {
       margin-top: 40px;
       text-align: center;
-      font-size: 0.9em;
+      font-size: 0.7em;
       color: #6b7280;
     }
   </style>
@@ -86,6 +86,8 @@
     <p><strong>NISN:</strong> <span id="resNisn"></span></p>
     <p><strong>Tanggal Lahir:</strong> <span id="resTgl"></span></p>
     <p><strong>Status:</strong> <span id="resStatus" style="font-weight: bold;"></span></p>
+    <p><strong>NILAI:</strong> <span id="resNilai"></span></p>
+    <p><strong>RANKING:</strong> <span id="resRanking"></span></p>
     <p><strong>File Kelulusan:</strong> <span id="resLink"></span></p>
   </div>
 
@@ -102,12 +104,14 @@
         const rows = csv.trim().split('\n');
         rows.shift(); // Buang header
         dataSiswa = rows.map(r => {
-          const [no, nama, kelas, nisn, tempat, tgl, status, nilai, rangking] = r.split(';');
+          const [no, nama, kelas, nisn, tempat, tgl, status, nilai, ranking] = r.split(';');
           return { 
             nama: nama.trim().toLowerCase(), 
-             nisn: nisn.trim(),
-             tgl: tgl.trim(),
-             status: status.trim() };
+            nisn: nisn.trim(),
+            tgl: tgl.trim(),
+            status: status.trim(),
+            nilai: nilai.trim(),
+            ranking: ranking.trim() };
         });
       });      
 
@@ -120,7 +124,7 @@
         if (hasil) {
         
             // Encode data ke URL
-            const url = `hasil.html?nama=${encodeURIComponent(hasil.nama)}&nisn=${hasil.nisn}&tgl=${hasil.tgl}&status=${hasil.status}`;
+            const url = `hasil.html?nama=${encodeURIComponent(hasil.nama)}&nisn=${hasil.nisn}&tgl=${hasil.tgl}&status=${hasil.status}&nilai=${hasil.nilai}&ranking=${hasil.ranking}`;
             window.location.href = url; // Arahkan ke halaman hasil
         } else {
             alert("Data tidak ditemukan. Pastikan Nama dan Tanggal Lahir sesuai.");
@@ -132,6 +136,8 @@
         document.getElementById("resNisn").textContent = hasil.nisn;
         document.getElementById("resTgl").textContent = hasil.tgl;
         document.getElementById("resStatus").textContent = hasil.status;
+        document.getElementById("resNilai").textContent = hasil.nilai;
+        document.getElementById("resRanking").textContent = hasil.ranking;
 
         if (hasil.status.toLowerCase() === "lulus") {
           document.getElementById("resLink").innerHTML = `<a href="${hasil.link}" target="_blank">Download Surat Kelulusan</a>`;
