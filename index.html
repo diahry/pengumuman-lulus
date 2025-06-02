@@ -4,6 +4,16 @@
   <meta charset="UTF-8">
   <title>Pengumuman Kelulusan SMP Harapan Jaya 2024/2025</title>
   <style>
+    .logo-container{
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .logo{
+        max-width: 100px;
+        height: auto;
+    }
+    
     body {
       font-family: Arial, sans-serif;
       background: #f1f5f9;
@@ -53,6 +63,10 @@
   </style>
 </head>
 <body>
+    
+    <div class="logo-container">
+        <img src="logo.jpg" alt="Logo Sekolah" class="logo">
+    </div>
 
   <h1>Pengumuman Kelulusan SMP Harapan Jaya 2024/2025</h1>
 
@@ -95,38 +109,23 @@
              tgl: tgl.trim(),
              status: status.trim() };
         });
-      });
+      });      
 
-    function cariData() {
-    const namaInput = document.getElementById("nama").value.trim().toLowerCase();
-    const tglInput = document.getElementById("tgl").value.trim();
-
-    const hasil = dataSiswa.find(s => s.nama === namaInput && s.tgl === tglInput);
-
-    if (hasil) {
-      // Tampilkan hasil
-      document.getElementById("resNama").textContent = hasil.nama;
-      document.getElementById("resNisn").textContent = hasil.nisn;
-      document.getElementById("resTgl").textContent = hasil.tgl;
-
-      const statusEl = document.getElementById("resStatus");
-      statusEl.textContent = hasil.status;
-
-      // Pewarnaan
-      if (hasil.status.toLowerCase() === "lulus") {
-        statusEl.style.color = "green";
-        document.getElementById("resLink").innerHTML = `Lulus - Silakan ambil dokumen resmi di sekolah.`;
-      } else {
-        statusEl.style.color = "red";
-        document.getElementById("resLink").innerHTML = `Tidak lulus`;
-      }
-
-      document.getElementById("hasil").classList.remove("hidden");
-    } else {
-      alert("Data tidak ditemukan. Pastikan Nama dan Tanggal Lahir sesuai.");
-      document.getElementById("hasil").classList.add("hidden");
+      function cariData() {
+        const namaInput = document.getElementById("nama").value.trim().toLowerCase();
+        const tglInput = document.getElementById("tgl").value.trim();
+        
+        const hasil = dataSiswa.find(s => s.nama === namaInput && s.tgl === tglInput);
+        
+        if (hasil) {
+        
+            // Encode data ke URL
+            const url = `hasil.html?nama=${encodeURIComponent(hasil.nama)}&nisn=${hasil.nisn}&tgl=${hasil.tgl}&status=${hasil.status}`;
+            window.location.href = url; // Arahkan ke halaman hasil
+        } else {
+            alert("Data tidak ditemukan. Pastikan Nama dan Tanggal Lahir sesuai.");
+        }
     }
-  }
 
       if (hasil) {
         document.getElementById("resNama").textContent = hasil.nama;
